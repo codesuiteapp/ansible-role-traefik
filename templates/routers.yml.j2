@@ -1,0 +1,49 @@
+http:
+  routers:
+{% if use_trf_argocd %}
+    argocd:
+      entryPoints:
+      - websecure
+      rule: "Host(`{{ TRAEFIK_DOMAIN }}`) && PathPrefix(`/argocd`)"
+      service: argocd-svc
+      tls: {}
+{% endif %}
+{% if use_trf_grafana %}
+    grafana:
+      entryPoints:
+      - websecure
+      middlewares:
+      - mid-basicauth@file
+      rule: "Host(`{{ TRAEFIK_DOMAIN }}`) && PathPrefix(`/grafana`)"
+      service: grafana-svc
+      tls: {}
+{% endif %}
+{% if use_trf_jaeger %}
+    jaeger:
+      entryPoints:
+      - websecure
+      #middlewares:
+      #- mid-basicauth@file
+      rule: "Host(`{{ TRAEFIK_DOMAIN }}`) && PathPrefix(`/jaeger`)"
+      service: jaeger-svc
+      tls: {}
+{% endif %}
+  services:
+{% if use_trf_argocd %}
+    argocd-svc:
+      loadBalancer:
+        servers:
+          - url: "{{ trf_argocd_url }}"
+{% endif %}
+{% if use_trf_grafana %}
+    grafana-svc:
+      loadBalancer:
+        servers:
+          - url: "{{ trf_grafana_url }}"
+{% endif %}
+{% if use_trf_jaeger %}
+    jaeger-svc:
+      loadBalancer:
+        servers:
+          - url: "{{ trf_jaeger_url }}"
+{% endif %}

@@ -1,0 +1,52 @@
+version: "3"
+services:
+  traefik:
+    image: ${DOCKER_IMAGE}
+    container_name: traefik
+    command:
+      - "--global.checkNewVersion=false"
+      # - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # - "--entrypoints.teleport-listen-tcp.address=:3023"
+      # - "--entrypoints.teleport-tunnel-tcp.address=:3024"
+      # - "--entrypoints.teleport-auth-tcp.address=:3025"
+      - "--providers.file.directory=/rules"
+      - "--providers.file.watch=true"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.http-catchall.entrypoints=web"
+      - "traefik.http.routers.http-catchall.rule=HostRegexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.web-router.entrypoints=websecure"
+      - "traefik.http.routers.web-router.rule=Host(`${TRF_DOMAIN}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
+      - "traefik.http.routers.web-router.tls=true"
+      - "traefik.http.routers.web-router.middlewares=mid-secure-headers@file,mid-rate-limit@file"
+      - "traefik.http.routers.web-router.service=api@internal"
+    ports:
+      - {{ traefik_http_port }}:80
+      - {{ traefik_https_port }}:443
+      - {{ traefik_mgmt_port }}:8080
+    volumes:
+      - ./rules:/rules
+      - ./cert:/etc/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+{% if use_extra_hosts %}
+    extra_hosts:
+    {% for host in extra_hosts %}
+    - {{ host }}
+    {% endfor %}
+{% endif %}
+{% if use_dkr_net %}
+    networks:
+      - {{ dkr_network }}
+
+networks:
+  {{ dkr_network }}:
+    external: true
+{% endif %}

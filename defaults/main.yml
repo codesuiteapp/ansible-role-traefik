@@ -1,0 +1,25 @@
+---
+image_registry_server: "docker.io"
+traefik_image: "sonatype/traefik3"
+traefik_ver: "latest"
+traefik_port: 80
+use_cert: false
+
+docker_compose_bin: "docker-compose"
+use_dkr_net: true
+use_traefik: true
+dkr_network: devops_net
+use_extra_hosts: false
+add_etc_host: "10.11.22.10   devops.com"
+
+use_trf_argocd: false
+use_trf_grafana: false
+use_trf_jaeger: false
+
+app_home_dir: /app
+app_data_dir: /data
+
+create_user: false
+adm_user: "appadm"
+adm_group: "appadm"
+adm_uid: "1000"

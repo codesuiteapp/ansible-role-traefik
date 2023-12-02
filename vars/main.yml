@@ -1,0 +1,4 @@
+---
+traefik_home: "{{ app_home_dir }}/traefik-docker"
+traefik_logs: "{{ app_logs_dir }}/traefik"
+extra_hosts: ["devops.com:10.11.22.33"]

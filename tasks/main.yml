@@ -1,0 +1,54 @@
+---
+- name: Creates directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ adm_user }}"
+    group: "{{ adm_group }}"
+    mode: '0775'
+    force: false
+  with_items:
+    - "{{ app_home_dir }}"
+    - "{{ traefik_home }}"
+    - "{{ traefik_logs }}"
+    - "{{ traefik_home }}/rules"
+
+- name: Copy traefik conf
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ adm_user }}"
+    group: "{{ adm_group }}"
+    mode: '0644'
+    backup: true
+  with_items:
+    - { src: 'cert', dest: '{{ traefik_home }}' }
+  when: use_cert
+
+- name: Copy Cert file
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ adm_user }}"
+    group: "{{ adm_group }}"
+    mode: '0644'
+    backup: false
+  with_items:
+    - { src: 'cert.toml.j2', dest: '{{ traefik_home }}/rules/cert.toml' }
+  when: use_cert
+
+- name: Copy file
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ adm_user }}"
+    group: "{{ adm_group }}"
+    mode: '0644'
+    backup: true
+  with_items:
+    - { src: '.env.j2', dest: '{{ traefik_home }}/.env' }
+    - { src: 'docker-compose.yml.j2', dest: '{{ traefik_home }}/docker-compose.yml' }
+    - { src: 'middlewares.yml.j2', dest: '{{ traefik_home }}/rules/middlewares.yml' }
+    - { src: 'routers.yml.j2', dest: '{{ traefik_home }}/rules/routers.yml' }
+  notify:
+    Restart traefik
