@@ -6,6 +6,7 @@ traefik_ver: "latest"
 docker_compose_bin: "docker-compose"
 use_dkr_net: true
 use_traefik: true
+use_traefik_tls: false
 dkr_network: devops_net
 use_extra_hosts: false
 add_etc_host: "10.11.22.10   devops.com"
@@ -18,7 +19,7 @@ traefik_cert: "devops_com.crt"
 traefik_key: "devops_com.key"
 traefik_http_port: 9080
 traefik_https_port: 9443
-traefik_mgmt_port: 9999
+traefik_mgmt_port: 8765
 
 use_trf_argocd: '{{ false | bool }}'
 use_trf_jaeger: '{{ false | bool }}'
