@@ -4,7 +4,7 @@ http:
     argocd:
       entryPoints:
       - websecure
-      rule: "Host(`{{ TRAEFIK_DOMAIN }}`) && PathPrefix(`/argocd`)"
+      rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/argocd`)"
       service: argocd-svc
       tls: {}
 {% endif %}
@@ -14,7 +14,7 @@ http:
       - websecure
       middlewares:
       - mid-basicauth@file
-      rule: "Host(`{{ TRAEFIK_DOMAIN }}`) && PathPrefix(`/grafana`)"
+      rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/grafana`)"
       service: grafana-svc
       tls: {}
 {% endif %}
@@ -24,7 +24,7 @@ http:
       - websecure
       #middlewares:
       #- mid-basicauth@file
-      rule: "Host(`{{ TRAEFIK_DOMAIN }}`) && PathPrefix(`/jaeger`)"
+      rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/jaeger`)"
       service: jaeger-svc
       tls: {}
 {% endif %}

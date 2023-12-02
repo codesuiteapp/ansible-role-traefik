@@ -1,9 +1,7 @@
 ---
 image_registry_server: "docker.io"
-traefik_image: "sonatype/traefik3"
+traefik_image: "library/traefik"
 traefik_ver: "latest"
-traefik_port: 80
-use_cert: false
 
 docker_compose_bin: "docker-compose"
 use_dkr_net: true
@@ -12,12 +10,26 @@ dkr_network: devops_net
 use_extra_hosts: false
 add_etc_host: "10.11.22.10   devops.com"
 
-use_trf_argocd: false
-use_trf_grafana: false
-use_trf_jaeger: false
+traefik_domain: "{{ domain_name }}"
+traefik_admin: "{{ adm_user }}"
+use_cert: false
+traefik_cert: "devops_com.crt"
+traefik_key: "devops_com.key"
+traefik_http_port: 9080
+traefik_https_port: 9443
+traefik_mgmt_port: 9999
+
+use_trf_argocd: '{{ false | bool }}'
+use_trf_jaeger: '{{ false | bool }}'
+use_trf_grafana: '{{ false | bool }}'
+
+trf_argocd_url: http://{{ traefik_domain }}/argocd
+trf_grafana_url: http://{{ traefik_domain }}/grafana
+trf_jaeger_url: http://{{ traefik_domain }}/jaeger
 
 app_home_dir: /app
 app_data_dir: /data
+app_logs_dir: /log
 
 create_user: false
 adm_user: "appadm"
