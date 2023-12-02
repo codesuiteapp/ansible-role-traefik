@@ -10,6 +10,7 @@ dkr_network: devops_net
 use_extra_hosts: false
 add_etc_host: "10.11.22.10   devops.com"
 
+domain_name: "devops.com"
 traefik_domain: "{{ domain_name }}"
 traefik_admin: "{{ adm_user }}"
 use_cert: false

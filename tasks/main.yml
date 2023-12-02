@@ -1,11 +1,23 @@
 ---
+- name: Create docker network
+  community.docker.docker_network:
+    name: "{{ dkr_network }}"
+    driver: bridge
+    state: present
+  register: result
+  when: use_dkr_net
+
+- name: Print variables
+  ansible.builtin.debug:
+    var: result
+
 - name: Creates directory
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: "{{ adm_user }}"
     group: "{{ adm_group }}"
-    mode: '0775'
+    mode: '0755'
     force: false
   with_items:
     - "{{ app_home_dir }}"
