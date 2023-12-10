@@ -50,5 +50,8 @@
     - { src: 'docker-compose.yml.j2', dest: '{{ traefik_home }}/docker-compose.yml' }
     - { src: 'middlewares.yml.j2', dest: '{{ traefik_home }}/rules/middlewares.yml' }
     - { src: 'routers.yml.j2', dest: '{{ traefik_home }}/rules/routers.yml' }
+
+- name: Restart traefik
+  shell: echo success
   notify:
     Restart traefik
