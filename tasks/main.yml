@@ -52,6 +52,6 @@
     - { src: 'routers.yml.j2', dest: '{{ traefik_home }}/rules/routers.yml' }
 
 - name: Restart traefik
-  shell: echo success
+  ansible.builtin.shell: echo success
   notify:
     Restart traefik
