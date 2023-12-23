@@ -9,6 +9,7 @@ services:
       - "--api.insecure=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.mgmt.address=:8080"
       # - "--entrypoints.teleport-listen-tcp.address=:3023"
       # - "--entrypoints.teleport-tunnel-tcp.address=:3024"
       # - "--entrypoints.teleport-auth-tcp.address=:3025"
@@ -28,6 +29,9 @@ services:
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
 {% endif %}
+      - "traefik.http.routers.api.entrypoints=web,websecure"
+      - "traefik.http.routers.api.middlewares=mid-basicauth@file,mid-rate-limit@file"
+      - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.routers.web-router.entrypoints=web,websecure"
       - "traefik.http.routers.web-router.rule=Host(`${trf_domain}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
       - "traefik.http.routers.web-router.tls=true"

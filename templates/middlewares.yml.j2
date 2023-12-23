@@ -6,8 +6,8 @@ http:
     mid-basicauth:
       basicAuth:
         users:
-          - 'admin:$apr1$qaCz/W5.$cZdo6IItgyxd70Kf25zwV.'
-          - '{{ traefik_admin }}:{SHA}0u95CK7YB2gQR3SLhovCZ/aQD/E='
+          - 'admin:$apr1$XxFLiwsi$B7m.2OMSRO9cKk0wRslzw0'
+          - '{{ traefik_admin }}:$apr1$kPzYD8LP$DIRllupFtAoFNTCQkEhvd.'
         # usersFile = "/shared/.htpasswd" # be sure to mount the volume through docker-compose.yml
         realm: Traefik2 Basic Auth
     mid-rate-limit:
