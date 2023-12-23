@@ -10,8 +10,9 @@
   with_items:
     - "{{ app_home_dir }}"
     - "{{ traefik_home }}"
-    - "{{ traefik_logs }}"
     - "{{ traefik_home }}/rules"
+    - "{{ traefik_home }}/cert"
+    - "{{ traefik_logs }}"
 
 - name: Copy traefik conf
   ansible.builtin.copy:

@@ -6,7 +6,9 @@ http:
       - web
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/gitlab`)"
-      service: gitlab-svc
+      middlewares:
+        - default-headers
+      service: gitlab
       tls: {}
 {% endif %}
 {% if use_svc_nexus %}
@@ -15,7 +17,7 @@ http:
       - web
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/nexus`)"
-      service: nexus-svc
+      service: nexus
       tls: {}
 {% endif %}
 {% if use_svc_jira %}
@@ -24,7 +26,7 @@ http:
       - web
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/jira`)"
-      service: jira-svc
+      service: jira
       tls: {}
 {% endif %}
 {% if use_svc_argocd %}
@@ -33,7 +35,7 @@ http:
       - web
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/argocd`)"
-      service: argocd-svc
+      service: argocd
       tls: {}
 {% endif %}
 {% if use_svc_grafana %}
@@ -42,7 +44,7 @@ http:
       - web
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/grafana`)"
-      service: grafana-svc
+      service: grafana
       tls: {}
 {% endif %}
 {% if use_svc_jaeger %}
@@ -53,42 +55,45 @@ http:
       #middlewares:
       #- mid-basicauth@file
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/jaeger`)"
-      service: jaeger-svc
+      service: jaeger
       tls: {}
 {% endif %}
   services:
 {% if use_svc_argocd %}
-    argocd-svc:
+    argocd:
       loadBalancer:
         servers:
           - url: "{{ trf_argocd_url }}"
+        passHostHeader: true
 {% endif %}
 {% if use_svc_grafana %}
-    grafana-svc:
+    grafana:
       loadBalancer:
         servers:
           - url: "{{ trf_grafana_url }}"
+        passHostHeader: true
 {% endif %}
 {% if use_svc_jaeger %}
-    jaeger-svc:
+    jaeger:
       loadBalancer:
         servers:
           - url: "{{ trf_jaeger_url }}"
+        passHostHeader: true
 {% endif %}
 {% if use_svc_gitlab %}
-    gitlab-svc:
+    gitlab:
       loadBalancer:
         servers:
           - url: "{{ trf_gitlab_url }}"
 {% endif %}
 {% if use_svc_nexus %}
-    nexus-svc:
+    nexus:
       loadBalancer:
         servers:
           - url: "{{ trf_nexus_url }}"
 {% endif %}
 {% if use_svc_jira %}
-    jira-svc:
+    jira:
       loadBalancer:
         servers:
           - url: "{{ trf_jira_url }}"

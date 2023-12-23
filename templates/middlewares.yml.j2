@@ -1,5 +1,8 @@
 http:
   middlewares:
+    addprefix-sample:
+      addPrefix:
+        prefix: "/sample"
     mid-basicauth:
       basicAuth:
         users:
@@ -11,6 +14,15 @@ http:
       rateLimit:
         average: 100
         burst: 50
+    default-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
     mid-secure-headers:
       headers:
         accessControlAllowMethods:
