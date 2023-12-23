@@ -21,13 +21,19 @@ traefik_http_port: 9080
 traefik_https_port: 9443
 traefik_mgmt_port: 8765
 
-use_trf_argocd: '{{ false | bool }}'
-use_trf_jaeger: '{{ false | bool }}'
-use_trf_grafana: '{{ false | bool }}'
+use_svc_argocd: '{{ false | bool }}'
+use_svc_jaeger: '{{ false | bool }}'
+use_svc_grafana: '{{ false | bool }}'
+use_svc_gitlab: '{{ false | bool }}'
+use_svc_nexus: '{{ false | bool }}'
+use_svc_jira: '{{ false | bool }}'
 
 trf_argocd_url: http://{{ traefik_domain }}/argocd
 trf_grafana_url: http://{{ traefik_domain }}/grafana
 trf_jaeger_url: http://{{ traefik_domain }}/jaeger
+trf_gitlab_url: http://{{ traefik_domain }}/gitlab
+trf_nexus_url: http://{{ traefik_domain }}/nexus
+trf_jira_url: http://{{ traefik_domain }}/jira
 
 app_home_dir: /app
 app_data_dir: /data

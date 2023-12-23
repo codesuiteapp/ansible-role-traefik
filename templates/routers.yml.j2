@@ -1,6 +1,33 @@
 http:
   routers:
-{% if use_trf_argocd %}
+{% if use_svc_gitlab %}
+    gitlab:
+      entryPoints:
+      - web
+      - websecure
+      rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/gitlab`)"
+      service: gitlab-svc
+      tls: {}
+{% endif %}
+{% if use_svc_nexus %}
+    nexus:
+      entryPoints:
+      - web
+      - websecure
+      rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/nexus`)"
+      service: nexus-svc
+      tls: {}
+{% endif %}
+{% if use_svc_jira %}
+    jira:
+      entryPoints:
+      - web
+      - websecure
+      rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/jira`)"
+      service: jira-svc
+      tls: {}
+{% endif %}
+{% if use_svc_argocd %}
     argocd:
       entryPoints:
       - web
@@ -9,7 +36,7 @@ http:
       service: argocd-svc
       tls: {}
 {% endif %}
-{% if use_trf_grafana %}
+{% if use_svc_grafana %}
     grafana:
       entryPoints:
       - web
@@ -18,7 +45,7 @@ http:
       service: grafana-svc
       tls: {}
 {% endif %}
-{% if use_trf_jaeger %}
+{% if use_svc_jaeger %}
     jaeger:
       entryPoints:
       - web
@@ -30,21 +57,39 @@ http:
       tls: {}
 {% endif %}
   services:
-{% if use_trf_argocd %}
+{% if use_svc_argocd %}
     argocd-svc:
       loadBalancer:
         servers:
           - url: "{{ trf_argocd_url }}"
 {% endif %}
-{% if use_trf_grafana %}
+{% if use_svc_grafana %}
     grafana-svc:
       loadBalancer:
         servers:
           - url: "{{ trf_grafana_url }}"
 {% endif %}
-{% if use_trf_jaeger %}
+{% if use_svc_jaeger %}
     jaeger-svc:
       loadBalancer:
         servers:
           - url: "{{ trf_jaeger_url }}"
+{% endif %}
+{% if use_svc_gitlab %}
+    gitlab-svc:
+      loadBalancer:
+        servers:
+          - url: "{{ trf_gitlab_url }}"
+{% endif %}
+{% if use_svc_nexus %}
+    nexus-svc:
+      loadBalancer:
+        servers:
+          - url: "{{ trf_nexus_url }}"
+{% endif %}
+{% if use_svc_jira %}
+    jira-svc:
+      loadBalancer:
+        servers:
+          - url: "{{ trf_jira_url }}"
 {% endif %}
