@@ -14,6 +14,11 @@
     - "{{ traefik_home }}/cert"
     - "{{ traefik_logs }}"
 
+- name: Touch traefik.log
+  ansible.builtin.file:
+    path: "{{ traefik_logs }}/traefik.log"
+    state: touch
+
 - name: Copy traefik conf
   ansible.builtin.copy:
     src: "{{ item.src }}"
