@@ -9,7 +9,6 @@ http:
       middlewares:
         - default-headers
       service: gitlab
-      tls: {}
 {% endif %}
 {% if use_svc_nexus %}
     nexus:
@@ -18,7 +17,6 @@ http:
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/nexus`)"
       service: nexus
-      tls: {}
 {% endif %}
 {% if use_svc_jira %}
     jira:
@@ -27,7 +25,6 @@ http:
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/jira`)"
       service: jira
-      tls: {}
 {% endif %}
 {% if use_svc_argocd %}
     argocd:
@@ -36,7 +33,7 @@ http:
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/argocd`)"
       service: argocd
-      tls: {}
+#      tls: {}
 {% endif %}
 {% if use_svc_grafana %}
     grafana:
@@ -45,18 +42,18 @@ http:
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/grafana`)"
       service: grafana
-      tls: {}
+#      tls: {}
 {% endif %}
 {% if use_svc_jaeger %}
     jaeger:
       entryPoints:
       - web
       - websecure
-      #middlewares:
-      #- mid-basicauth@file
+      # middlewares:
+      # - mid-basicauth@file
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/jaeger`)"
       service: jaeger
-      tls: {}
+#      tls: {}
 {% endif %}
   services:
 {% if use_svc_argocd %}
