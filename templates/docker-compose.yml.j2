@@ -27,7 +27,8 @@ services:
       - "traefik.http.routers.web-router.entrypoints=web,websecure"
       - "traefik.http.routers.web-router.rule=Host(`${trf_domain}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
       - "traefik.http.routers.web-router.tls=true"
-      - "traefik.http.routers.web-router.middlewares=mid-secure-headers@file,mid-rate-limit@file"
+      - "traefik.http.routers.web-router.middlewares=mid-rate-limit@file"
+      # - "traefik.http.routers.web-router.middlewares=mid-secure-headers@file,mid-rate-limit@file"
       - "traefik.http.routers.web-router.service=api@internal"
     ports:
       - {{ traefik_http_port }}:80
