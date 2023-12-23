@@ -61,40 +61,40 @@ http:
   services:
 {% if use_svc_argocd %}
     argocd:
-      loadBalancer:
+      loadbalancer:
         servers:
           - url: "{{ trf_argocd_url }}"
         passHostHeader: true
 {% endif %}
 {% if use_svc_grafana %}
     grafana:
-      loadBalancer:
+      loadbalancer:
         servers:
           - url: "{{ trf_grafana_url }}"
         passHostHeader: true
 {% endif %}
 {% if use_svc_jaeger %}
     jaeger:
-      loadBalancer:
+      loadbalancer:
         servers:
           - url: "{{ trf_jaeger_url }}"
         passHostHeader: true
 {% endif %}
 {% if use_svc_gitlab %}
     gitlab:
-      loadBalancer:
+      loadbalancer:
         servers:
           - url: "{{ trf_gitlab_url }}"
 {% endif %}
 {% if use_svc_nexus %}
     nexus:
-      loadBalancer:
+      loadbalancer:
         servers:
           - url: "{{ trf_nexus_url }}"
 {% endif %}
 {% if use_svc_jira %}
     jira:
-      loadBalancer:
+      loadbalancer:
         servers:
           - url: "{{ trf_jira_url }}"
 {% endif %}

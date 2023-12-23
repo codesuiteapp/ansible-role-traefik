@@ -16,11 +16,14 @@ http:
         burst: 50
     default-headers:
       headers:
-        frameDeny: true
-        sslRedirect: true
+        hostsProxyHeaders:
+          - X-Forwarded-Host
         browserXssFilter: true
         contentTypeNosniff: true
         forceSTSHeader: true
+        frameDeny: true
+        referrerPolicy: "same-origin"
+        sslRedirect: false
         stsIncludeSubdomains: true
         stsPreload: true
     mid-secure-headers:
