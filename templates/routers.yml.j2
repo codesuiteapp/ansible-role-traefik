@@ -1,5 +1,15 @@
 http:
   routers:
+{% if use_svc_stobatch %}
+    stobatch:
+      entryPoints:
+      - web
+      - websecure
+      rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/stobatch`)"
+      middlewares:
+        - default-headers
+      service: stobatch
+{% endif %}
 {% if use_svc_gitlab %}
     gitlab:
       entryPoints:
@@ -44,6 +54,15 @@ http:
       service: grafana
 #      tls: {}
 {% endif %}
+{% if use_svc_prometheus %}
+    prometheus:
+      entryPoints:
+      - web
+      - websecure
+      rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/prometheus`)"
+      service: prometheus
+#      tls: {}
+{% endif %}
 {% if use_svc_jaeger %}
     jaeger:
       entryPoints:
@@ -70,12 +89,25 @@ http:
           - url: "{{ trf_grafana_url }}"
         passHostHeader: true
 {% endif %}
+{% if use_svc_prometheus %}
+    prometheus:
+      loadbalancer:
+        servers:
+          - url: "{{ trf_prometheus_url }}"
+        passHostHeader: true
+{% endif %}
 {% if use_svc_jaeger %}
     jaeger:
       loadbalancer:
         servers:
           - url: "{{ trf_jaeger_url }}"
         passHostHeader: true
+{% endif %}
+{% if use_svc_stobatch %}
+    stobatch:
+      loadbalancer:
+        servers:
+          - url: "{{ trf_stobatch_url }}"
 {% endif %}
 {% if use_svc_gitlab %}
     gitlab:
