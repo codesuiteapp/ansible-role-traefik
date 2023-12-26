@@ -26,6 +26,18 @@ http:
         sslRedirect: false
         stsIncludeSubdomains: true
         stsPreload: true
+    argocd-headers:
+      headers:
+        customRequestHeaders:
+          Host: "argocd-eks.sto-dev.koscom.co.kr"
+    grafana-headers:
+      headers:
+        customRequestHeaders:
+          Host: "grafana-eks.sto-dev.koscom.co.kr"
+    batch-headers:
+      headers:
+        customRequestHeaders:
+          Host: "batch-eks.sto-dev.koscom.co.kr"
     mid-secure-headers:
       headers:
         accessControlAllowMethods:

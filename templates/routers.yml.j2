@@ -7,7 +7,7 @@ http:
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/stobatch`)"
       middlewares:
-        - default-headers
+        - batch-headers
       service: stobatch
 {% endif %}
 {% if use_svc_gitlab %}
@@ -42,6 +42,8 @@ http:
       - web
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/argocd`)"
+      middlewares:
+        - argocd-headers
       service: argocd
 #      tls: {}
 {% endif %}
@@ -51,6 +53,8 @@ http:
       - web
       - websecure
       rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/grafana`)"
+      middlewares:
+        - grafana-headers
       service: grafana
 #      tls: {}
 {% endif %}
