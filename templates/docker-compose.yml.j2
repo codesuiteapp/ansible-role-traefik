@@ -9,7 +9,7 @@ services:
       - "--api.insecure=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.mgmt.address=:8080"
+      - "--entrypoints.mgmt.address=:8780"
       # - "--entrypoints.teleport-listen-tcp.address=:3023"
       # - "--entrypoints.teleport-tunnel-tcp.address=:3024"
       # - "--entrypoints.teleport-auth-tcp.address=:3025"
@@ -20,6 +20,7 @@ services:
       - "--accesslog=true"
       - "--accesslog.bufferingsize=100"
       - "--accesslog.filepath=/var/log/traefik.log"
+      - "--ping"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network={{ dkr_network }}"
@@ -37,10 +38,13 @@ services:
       - "traefik.http.routers.web-router.tls=true"
       - "traefik.http.routers.web-router.middlewares=mid-basicauth@file,mid-rate-limit@file"
       - "traefik.http.routers.web-router.service=api@internal"
+      - "traefik.http.routers.pingweb.rule=PathPrefix(`/healthcheck`)"
+      - "traefik.http.routers.pingweb.service=ping@internal"
+      - "traefik.http.routers.pingweb.entrypoints=websecure"
     ports:
       - {{ traefik_http_port }}:80
       - {{ traefik_https_port }}:443
-      - {{ traefik_mgmt_port }}:8080
+      - {{ traefik_mgmt_port }}:8780
     volumes:
       - {{ traefik_logs }}/traefik.log:/var/log/traefik.log
       - {{ traefik_home }}/cert:/etc/certs

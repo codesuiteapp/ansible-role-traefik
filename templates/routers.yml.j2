@@ -1,15 +1,5 @@
 http:
   routers:
-{% if use_svc_stobatch %}
-    stobatch:
-      entryPoints:
-      - web
-      - websecure
-      rule: "Host(`{{ traefik_domain }}`) && PathPrefix(`/stobatch`)"
-      middlewares:
-        - batch-headers
-      service: stobatch
-{% endif %}
 {% if use_svc_gitlab %}
     gitlab:
       entryPoints:
@@ -79,6 +69,12 @@ http:
 #      tls: {}
 {% endif %}
   services:
+{#     healthcheck:
+      loadbalancer:
+        healthcheck:
+          path: /healthcheck
+          interval: "10s"
+          timeout: "3s" #}
 {% if use_svc_argocd %}
     argocd:
       loadbalancer:
@@ -106,12 +102,6 @@ http:
         servers:
           - url: "{{ trf_jaeger_url }}"
         passHostHeader: true
-{% endif %}
-{% if use_svc_stobatch %}
-    stobatch:
-      loadbalancer:
-        servers:
-          - url: "{{ trf_stobatch_url }}"
 {% endif %}
 {% if use_svc_gitlab %}
     gitlab:
